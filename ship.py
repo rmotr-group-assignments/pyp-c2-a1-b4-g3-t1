@@ -11,4 +11,3 @@ class Ship:
     def from_string(input):
         input = input.lower()
         return Ship._string_ship_dict.get(input, Ship.Invalid)
-

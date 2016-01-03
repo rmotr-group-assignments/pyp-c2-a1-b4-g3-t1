@@ -2,6 +2,7 @@ import unittest
 from parse_board_input import parse as parse_bi
 from ship import Ship
 
+
 class TestParseBoardInput(unittest.TestCase):
     def test_input_1(self):
         expected = (Ship.Submarine, ('B', 2), True)

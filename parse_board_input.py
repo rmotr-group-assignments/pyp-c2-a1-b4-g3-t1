@@ -1,6 +1,7 @@
 import re
 from ship import Ship
 
+
 def parse(input):
     """Parse user's ship placement input string and return a triple containing
     the parsed data
@@ -19,14 +20,14 @@ def parse(input):
     position_match = position_parser.search(input)
     if position_match is None:
         raise ValueError("Invalid position in input")
-    position = (position_match.group()[0].upper(), int(position_match.group()[-1]))
+    position = (position_match.group()[0].upper(),
+                int(position_match.group()[-1]))
 
     orientation_parser = re.compile(r'(?i)horizontal|vertical|horizontally|' +
-                                     'vertically')
+                                    'vertically')
     orientation_match = orientation_parser.search(input)
     if orientation_match is None:
         raise ValueError("Invalid orientation in input")
     orientation = "horizontal" in orientation_match.group().lower()
 
     return (ship_type, position, orientation)
-
