@@ -1,21 +1,14 @@
 import re
-from ship import Ship
+from ship import Ship, ship_from_string
 
 
 def parse(input):
-    """Parse user's ship placement input string and return a triple containing
-    the parsed data
+    """Parse user's ship placement input string and returns the ship specified
 
     Raises: ValueError if input is invalid
 
-    Returns: a triple of the form (Shiptype, position, horizontal_orientation?)
+    Returns: the ship object specified by the input
     """
-    ship_parser = re.compile(r'(?i)submarine|sub|aircraft|patrol')
-    ship_match = ship_parser.search(input)
-    if ship_match is None:
-        raise ValueError("Invalid ship type in input")
-    ship_type = Ship.from_string(ship_match.group())
-
     position_parser = re.compile(r'(?i)[A-L],?\s?[0-9]')
     position_match = position_parser.search(input)
     if position_match is None:
@@ -30,4 +23,8 @@ def parse(input):
         raise ValueError("Invalid orientation in input")
     orientation = "horizontal" in orientation_match.group().lower()
 
-    return (ship_type, position, orientation)
+    ship_parser = re.compile(r'(?i)submarine|sub|aircraft|patrol')
+    ship_match = ship_parser.search(input)
+    if ship_match is None:
+        raise ValueError("Invalid ship type in input")
+    return ship_from_string(ship_match.group(), position, orientation)

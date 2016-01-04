@@ -1,13 +1,70 @@
-class Ship:
-    Submarine, Aircraft, Patrol, Invalid = range(4)
+from board import Board
 
-    _string_ship_dict = {
-            "submarine": Submarine,
-            "aircraft": Aircraft,
-            "patrol": Patrol
-    }
+class Ship(object):
+    def __init__(self, pos, horizontal):
+        self.pos = pos
+        self.horizontal = horizontal
 
-    @staticmethod
-    def from_string(input):
-        input = input.lower()
-        return Ship._string_ship_dict.get(input, Ship.Invalid)
+    def can_place(self, board):
+        p = self.pos
+        if not board.cell_empty(p[0], p[1]):
+            return False
+
+        if self.horizontal:
+            for i in range(self.length - 1):
+                p = (p[0], Board.next_col(p[1]))
+                if not board.cell_empty(p[0], p[1]):
+                    return False
+        else:
+            for i in range(self.length - 1):
+                p = (Board.next_row(p[0]), p[1])
+                if not board.cell_empty(p[0], p[1]):
+                    return False
+        return True
+
+    def place(self, board):
+        p = self.pos
+        board.write_cell(p[0], p[1], self)
+        if self.horizontal:
+            for i in range(self.length - 1):
+                p = (p[0], Board.next_col(p[1]))
+                board.write_cell(p[0], p[1], self)
+        else:
+            for i in range(self.length - 1):
+                p = (Board.next_row(p[0]), p[1])
+                board.write_cell(p[0], p[1], self)
+
+class Submarine(Ship):
+    def __init__(self, pos, horizontal):
+        super(Submarine, self).__init__(pos, horizontal)
+        self.length = 3
+
+    def __str__(self):
+        return "S"
+
+class PatrolBoat(Ship):
+    def __init__(self, pos, horizontal):
+        super(PatrolBoat, self).__init__(pos, horizontal)
+        self.length = 2
+
+    def __str__(self):
+        return "P"
+    
+class Aircraft(Ship):
+    def __init__(self, pos, horizontal):
+        super(Aircraft, self).__init__(pos, horizontal)
+        self.length = 5
+
+    def __str__(self):
+        return "A"
+
+_string_ship_dict = {
+        "submarine": Submarine,
+        "aircraft": Aircraft,
+        "patrol": PatrolBoat
+}
+
+def ship_from_string(input, pos, horizontal):
+    input = input.lower()
+    return _string_ship_dict[input](pos, horizontal)
+
