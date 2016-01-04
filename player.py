@@ -21,6 +21,10 @@ class Player(object):
         """Returns whether this player's ships have all sunk"""
         return self.ships_left == 0
 
+    def __build_board(self):
+        """Private method to build the player's board upon initialization"""
+        raise NotImplementedError()
+
 class HumanPlayer(Player):
     # IMPLEMENT LATER
     pass
