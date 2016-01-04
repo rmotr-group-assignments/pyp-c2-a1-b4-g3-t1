@@ -4,6 +4,7 @@ class Ship(object):
     def __init__(self, pos, horizontal):
         self.pos = pos
         self.horizontal = horizontal
+        self.hit = False
 
     def can_place(self, board):
         p = self.pos
@@ -34,12 +35,17 @@ class Ship(object):
                 p = (Board.next_row(p[0]), p[1])
                 board.write_cell(p[0], p[1], self)
 
+    def hit(self):
+        self.hit = True
+
 class Submarine(Ship):
     def __init__(self, pos, horizontal):
         super(Submarine, self).__init__(pos, horizontal)
         self.length = 3
 
     def __str__(self):
+        if self.hit:
+            return "H"
         return "S"
 
 class PatrolBoat(Ship):
@@ -48,6 +54,8 @@ class PatrolBoat(Ship):
         self.length = 2
 
     def __str__(self):
+        if self.hit:
+            return "H"
         return "P"
     
 class Aircraft(Ship):
@@ -56,6 +64,8 @@ class Aircraft(Ship):
         self.length = 5
 
     def __str__(self):
+        if self.hit:
+            return "H"
         return "A"
 
 _string_ship_dict = {

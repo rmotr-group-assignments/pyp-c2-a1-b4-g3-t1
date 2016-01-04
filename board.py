@@ -8,6 +8,8 @@ padded_row_range = row_range + row_padding
 padded_col_range = col_range + col_padding
 padding_sentinel = 0
 
+hitmarker = "H"
+
 class Board(object):
     def __init__(self):
         self.cells = {}
@@ -24,6 +26,9 @@ class Board(object):
     def write_cell(self, row, col, ship):
         self.cells[(row, col)] = ship
 
+    def mark_hit(self, row, col):
+        self.cells[(row, col)] = hitmarker
+
     def cell_empty(self, row, col):
         return self.read_cell(row, col) == " "
 
@@ -36,6 +41,23 @@ class Board(object):
                 row_list.append(str(self.read_cell(row, col)))
 
             display += (row + "   |" + "|".join(row_list) + "|\n" +
+                        "    |-+-+-+-+-+-+-+-+-+-|\n")
+        return display
+
+    def side_by_side_str(self, other):
+        display = ("    Your Board                  Enemy Board\n" + 
+                   "     0 1 2 3 4 5 6 7 8 9         0 1 2 3 4 5 6 7 8 9\n" + 
+                   "    ---------------------       ---------------------\n")
+        for row in row_range:
+            your_row_list = []
+            enemy_row_list = []
+            for col in col_range:
+                your_row_list.append(str(self.read_cell(row, col)))
+                enemy_row_list.append(str(other.read_cell(row, col))) 
+
+            display += (row + "   |" + "|".join(your_row_list)  + "|   " +
+                        row + "   |" + "|".join(enemy_row_list) + "|\n"  + 
+                        "    |-+-+-+-+-+-+-+-+-+-|   " +
                         "    |-+-+-+-+-+-+-+-+-+-|\n")
         return display
 
