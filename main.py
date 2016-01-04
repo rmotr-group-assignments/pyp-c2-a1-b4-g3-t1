@@ -7,7 +7,9 @@ def game():
     attacking = HumanPlayer()
     defending = ComputerPlayer()
     while True:
-        attacking.attack(defending)
+        attack = attacking.choose_attack(defending)
+        response = defending.receive_attack(attack)
+        attacking.update_enemy_board(response)
         if defending.has_lost():
             print "{name} has won!\nCongratulations".format(str(attacking))
             break
