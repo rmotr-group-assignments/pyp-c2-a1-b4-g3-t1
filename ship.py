@@ -1,11 +1,14 @@
 from board import Board
 
 
-class Ship(object):
+class AbstractShip(object):
     def __init__(self, pos, horizontal):
         self.pos = pos
         self.horizontal = horizontal
         self.hit = False
+
+    def __eq__(self, other):
+        return self.pos == other.pos and self.horizontal == other.horizontal
 
     def can_place(self, board):
         p = self.pos
@@ -40,10 +43,11 @@ class Ship(object):
         self.hit = True
 
 
-class Submarine(Ship):
+class Submarine(AbstractShip):
     def __init__(self, pos, horizontal):
         super(Submarine, self).__init__(pos, horizontal)
         self.length = 3
+        self.sink_count = 3
 
     def __str__(self):
         if self.hit:
@@ -51,10 +55,11 @@ class Submarine(Ship):
         return "S"
 
 
-class PatrolBoat(Ship):
+class PatrolBoat(AbstractShip):
     def __init__(self, pos, horizontal):
         super(PatrolBoat, self).__init__(pos, horizontal)
         self.length = 2
+        self.sink_count = 2
 
     def __str__(self):
         if self.hit:
@@ -62,10 +67,11 @@ class PatrolBoat(Ship):
         return "P"
 
 
-class Aircraft(Ship):
+class Aircraft(AbstractShip):
     def __init__(self, pos, horizontal):
         super(Aircraft, self).__init__(pos, horizontal)
         self.length = 5
+        self.sink_count = 5
 
     def __str__(self):
         if self.hit:
@@ -80,6 +86,6 @@ _string_ship_dict = {
 }
 
 
-def ship_from_string(input, pos, horizontal):
+def ship_from_string(input):
     input = input.lower()
-    return _string_ship_dict[input](pos, horizontal)
+    return _string_ship_dict[input]
