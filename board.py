@@ -1,14 +1,15 @@
 import string
 
 row_range = string.ascii_uppercase[:10]
-col_range = list(range(0,10))
+col_range = list(range(0, 10))
 row_padding = string.ascii_uppercase[10:12]
-col_padding = list(range(10,12))
+col_padding = list(range(10, 12))
 padded_row_range = row_range + row_padding
 padded_col_range = col_range + col_padding
 padding_sentinel = 0
 
 hitmarker = "H"
+
 
 class Board(object):
     def __init__(self):
@@ -33,7 +34,7 @@ class Board(object):
         return self.read_cell(row, col) == " "
 
     def __str__(self):
-        display = ("     0 1 2 3 4 5 6 7 8 9\n" + 
+        display = ("     0 1 2 3 4 5 6 7 8 9\n" +
                    "    ---------------------\n")
         for row in row_range:
             row_list = []
@@ -45,18 +46,18 @@ class Board(object):
         return display
 
     def side_by_side_str(self, other):
-        display = ("    Your Board                  Enemy Board\n" + 
-                   "     0 1 2 3 4 5 6 7 8 9         0 1 2 3 4 5 6 7 8 9\n" + 
+        display = ("    Your Board                  Enemy Board\n" +
+                   "     0 1 2 3 4 5 6 7 8 9         0 1 2 3 4 5 6 7 8 9\n" +
                    "    ---------------------       ---------------------\n")
         for row in row_range:
             your_row_list = []
             enemy_row_list = []
             for col in col_range:
                 your_row_list.append(str(self.read_cell(row, col)))
-                enemy_row_list.append(str(other.read_cell(row, col))) 
+                enemy_row_list.append(str(other.read_cell(row, col)))
 
-            display += (row + "   |" + "|".join(your_row_list)  + "|   " +
-                        row + "   |" + "|".join(enemy_row_list) + "|\n"  + 
+            display += (row + "   |" + "|".join(your_row_list) + "|   " +
+                        row + "   |" + "|".join(enemy_row_list) + "|\n" +
                         "    |-+-+-+-+-+-+-+-+-+-|   " +
                         "    |-+-+-+-+-+-+-+-+-+-|\n")
         return display

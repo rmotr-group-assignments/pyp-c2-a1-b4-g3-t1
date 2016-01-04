@@ -1,5 +1,6 @@
 from player import HumanPlayer, ComputerPlayer
 
+
 def game():
     """The main game loop"""
     print "Welcome to Battleship!\n\n"

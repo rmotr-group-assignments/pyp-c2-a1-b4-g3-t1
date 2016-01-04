@@ -25,9 +25,11 @@ class Player(object):
         """Private method to build the player's board upon initialization"""
         raise NotImplementedError()
 
+
 class HumanPlayer(Player):
     # IMPLEMENT LATER
     pass
+
 
 class ComputerPlayer(Player):
     # IMPLEMENT LATER

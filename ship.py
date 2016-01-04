@@ -1,5 +1,6 @@
 from board import Board
 
+
 class Ship(object):
     def __init__(self, pos, horizontal):
         self.pos = pos
@@ -38,6 +39,7 @@ class Ship(object):
     def hit(self):
         self.hit = True
 
+
 class Submarine(Ship):
     def __init__(self, pos, horizontal):
         super(Submarine, self).__init__(pos, horizontal)
@@ -48,6 +50,7 @@ class Submarine(Ship):
             return "H"
         return "S"
 
+
 class PatrolBoat(Ship):
     def __init__(self, pos, horizontal):
         super(PatrolBoat, self).__init__(pos, horizontal)
@@ -57,7 +60,8 @@ class PatrolBoat(Ship):
         if self.hit:
             return "H"
         return "P"
-    
+
+
 class Aircraft(Ship):
     def __init__(self, pos, horizontal):
         super(Aircraft, self).__init__(pos, horizontal)
@@ -68,13 +72,14 @@ class Aircraft(Ship):
             return "H"
         return "A"
 
+
 _string_ship_dict = {
         "submarine": Submarine,
         "aircraft": Aircraft,
         "patrol": PatrolBoat
 }
 
+
 def ship_from_string(input, pos, horizontal):
     input = input.lower()
     return _string_ship_dict[input](pos, horizontal)
-
