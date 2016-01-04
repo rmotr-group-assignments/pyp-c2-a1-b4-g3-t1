@@ -1,11 +1,18 @@
+from board import Board
+from random import choice as rand_choice
+from parse_board_input import parse_position_input as get_attack_coord
+
+
 class Player(object):
     def __init__(self):
         self.ships_left = 4
+        self.my_board = self.__build_board()
+        self.enemy_board = Board()
 
     def __str__(self):
         raise NotImplementedError()
 
-    def choose_attack(self, defender):
+    def choose_attack(self):
         """Choose a valid location to attack the defending player"""
         raise NotImplementedError()
 
@@ -13,9 +20,12 @@ class Player(object):
         """Register attack with this player's board and respond"""
         raise NotImplementedError()
 
-    def update_enemy_board(self, attack_response):
-        """Update our board with the response from the enemy"""
-        raise NotImplementedError()
+    def update_enemy_board(self, row, col, hit):
+        """Update our board with the enemy hit"""
+        if hit:
+            self.enemy_board.mark_hit(row, col)
+        else:
+            self.enemy_board.mark_miss(row, col)
 
     def has_lost(self):
         """Returns whether this player's ships have all sunk"""
@@ -27,10 +37,35 @@ class Player(object):
 
 
 class HumanPlayer(Player):
-    # IMPLEMENT LATER
-    pass
+    def __init__(self):
+        super(HumanPlayer, self).__init__(self)
+        self.name = raw_input("What is your name? ")
+
+    def __str__(self):
+        return self.name
+
+    def choose_attack(self):
+        try:
+            print self.my_board.side_by_side_str(self.enemy_board)
+            position = get_attack_coords(raw_input("Fire where? "))
+            if enemy_board.cell_empty(position[0], position[1]):
+                return position
+            else
+                print "You've already fired there!"
+                return self.choose_attack()
+        except ValueError as v:
+            print v
+            return self.choose_attack()
 
 
 class ComputerPlayer(Player):
-    # IMPLEMENT LATER
-    pass
+    def __str__(self):
+        return "CPU"
+
+    def choose_attack(self):
+        rand_row = rand_choice(row_range)
+        rand_col = rand_choice(col_range)
+        if enemy_board.cell_empty(rand_row, rand_col):
+            return (rand_row, rand_col)
+        else
+            return self.choose_attack()
