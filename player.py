@@ -1,6 +1,7 @@
 from board import Board
 from board import empty_marker
 from random import choice as rand_choice
+import re
 from parse_board_input import parse_position_input as get_attack_coord
 
 
@@ -39,7 +40,7 @@ class Player(object):
 
 class HumanPlayer(Player):
     def __init__(self):
-        super(HumanPlayer, self).__init__(self)
+        super(HumanPlayer, self).__init__()
         self.name = raw_input("What is your name? ")
 
     def __str__(self):
@@ -57,6 +58,33 @@ class HumanPlayer(Player):
         except ValueError as v:
             print v
             return self.choose_attack()
+
+    def receive_attack(self, attack_loc):
+        print "Missile hits {}".format(attack_loc)
+        attacked_cell = self.my_board.read_cell(attack_loc[0], attack_loc[1])
+        hit = attacked_cell != empty_marker
+        sunk = False
+        if hit:
+            attacked_cell.sink_count -= 1
+            sunk = attacked_cell.sink_count == 0
+            self.my_board.mark_hit(attack_loc[0], attack_loc[1])
+        self.__get_player_response(hit, sunk)
+        return hit
+
+    def __get_player_response(self, hit, sunk):
+        if hit and sunk:
+            pattern = re.compile(r's[aui]nk')
+        elif hit:
+            pattern = re.compile(r'hit')
+        else:
+            pattern = re.compile(r'miss')
+
+        while True:
+            response = raw_input("Response? ")
+            if pattern.search(response) is not None:
+                return response
+            else:
+                print "Don't lie!"
 
 
 class ComputerPlayer(Player):
@@ -80,6 +108,8 @@ class ComputerPlayer(Player):
             else:
                 print "Hit!"
             self.my_board.mark_hit(attack_loc[0], attack_loc[1])
+            return True
         else:
             print "Miss"
+            return False
 
