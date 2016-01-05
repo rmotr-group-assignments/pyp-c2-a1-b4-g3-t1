@@ -73,6 +73,8 @@ class HumanPlayer(Player):
         if hit:
             attacked_cell.sink_count -= 1
             sunk = attacked_cell.sink_count == 0
+            if sunk:
+                self.ships_left -= 1
             self.my_board.mark_hit(attack_loc[0], attack_loc[1])
         self.__get_player_response(hit, sunk)
         return hit
@@ -141,6 +143,7 @@ class ComputerPlayer(Player):
         if attacked_cell != empty_marker:
             attacked_cell.sink_count -= 1
             if attacked_cell.sink_count == 0:
+                self.ships_left -= 1
                 print "You sunk my {}!".format(repr(attacked_cell))
             else:
                 print "Hit!"
