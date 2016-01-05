@@ -5,7 +5,6 @@ class AbstractShip(object):
     def __init__(self, pos, horizontal):
         self.pos = pos
         self.horizontal = horizontal
-        self.hit = False
 
     def __eq__(self, other):
         return self.pos == other.pos and self.horizontal == other.horizontal
@@ -39,10 +38,6 @@ class AbstractShip(object):
                 p = (Board.next_row(p[0]), p[1])
                 board.write_cell(p[0], p[1], self)
 
-    def hit(self):
-        self.hit = True
-
-
 class Submarine(AbstractShip):
     def __init__(self, pos, horizontal):
         super(Submarine, self).__init__(pos, horizontal)
@@ -50,10 +45,10 @@ class Submarine(AbstractShip):
         self.sink_count = 3
 
     def __str__(self):
-        if self.hit:
-            return "H"
         return "S"
 
+    def __repr__(self):
+        return "submarine"
 
 class PatrolBoat(AbstractShip):
     def __init__(self, pos, horizontal):
@@ -62,9 +57,10 @@ class PatrolBoat(AbstractShip):
         self.sink_count = 2
 
     def __str__(self):
-        if self.hit:
-            return "H"
         return "P"
+
+    def __repr__(self):
+        return "patrol boat"
 
 
 class Aircraft(AbstractShip):
@@ -74,9 +70,10 @@ class Aircraft(AbstractShip):
         self.sink_count = 5
 
     def __str__(self):
-        if self.hit:
-            return "H"
         return "A"
+
+    def __repr__(self):
+        return "aircraft"
 
 
 _string_ship_dict = {
