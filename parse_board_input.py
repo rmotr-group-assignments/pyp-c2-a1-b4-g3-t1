@@ -1,7 +1,7 @@
 import re
 from ship import ship_from_string
 
-position_parser = re.compile(r'(?i)[A-L],?\s?[0-9]')
+position_parser = re.compile(r'(?i)[A-L](,\s)?[0-9]')
 orientation_parser = re.compile(r'(?i)horizontal|vertical|horizontally|' +
                                  'vertically')
 ship_parser = re.compile(r'(?i)submarine|sub|aircraft|patrol')
@@ -25,7 +25,7 @@ def parse_ship_type_input(input):
     ship_match = ship_parser.search(input)
     if ship_match is None:
         raise ValueError("Invalid ship type in input")
-    return ship_from_string(ship_match.group())
+    return ship_from_string(ship_match.group().lower())
 
 
 def parse(input):
@@ -33,8 +33,8 @@ def parse(input):
 
     Raises: ValueError if input is invalid
 
-    Returns: the ship object specified by the input
+    Returns: a triple containing the type of ship to create, the position, and the orientation
     """
     position = parse_position_input(input)
     orientation = parse_orientation_input(input)
-    return parse_ship_type_input(input)(position, orientation)
+    return (parse_ship_type_input(input), position, orientation)
