@@ -1,4 +1,5 @@
 from board import Board
+from board import empty_marker
 from random import choice as rand_choice
 from parse_board_input import parse_position_input as get_attack_coord
 
@@ -50,7 +51,7 @@ class HumanPlayer(Player):
             position = get_attack_coords(raw_input("Fire where? "))
             if enemy_board.cell_empty(position[0], position[1]):
                 return position
-            else
+            else:
                 print "You've already fired there!"
                 return self.choose_attack()
         except ValueError as v:
@@ -67,5 +68,18 @@ class ComputerPlayer(Player):
         rand_col = rand_choice(col_range)
         if enemy_board.cell_empty(rand_row, rand_col):
             return (rand_row, rand_col)
-        else
+        else:
             return self.choose_attack()
+
+    def receive_attack(self, attack_loc):
+        attacked_cell = self.my_board.read_cell(attack_loc[0], attack_loc[1])
+        if attacked_cell != empty_marker:
+            attacked_cell.sink_count -= 1
+            if attacked_cell.sink_count == 0:
+                print "You sunk my {}!".format(repr(attacked_cell))
+            else:
+                print "Hit!"
+            self.my_board.mark_hit(attack_loc[0], attack_loc[1])
+        else:
+            print "Miss"
+
