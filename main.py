@@ -14,7 +14,7 @@ def game():
         hit = defending.receive_attack(attack_pos)
         attacking.update_enemy_board(attack_pos[0], attack_pos[1], hit)
         if defending.has_lost():
-            print "{name} has won!\nCongratulations".format(str(attacking))
+            print "{} has won!\nCongratulations".format(str(attacking))
             break
         else:
             attacking, defending = defending, attacking
