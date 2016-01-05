@@ -1,8 +1,11 @@
 from board import Board
 from board import empty_marker
+from board import row_range
+from board import col_range
 from parse_board_input import parse_position_input as get_attack_coord
 from parse_board_input import parse as get_next_ship
 from random import choice as rand_choice
+from random import randint
 import re
 from ship import Aircraft, PatrolBoat, Submarine
 
@@ -147,3 +150,12 @@ class ComputerPlayer(Player):
             print "Miss"
             return False
 
+    def build_board(self):
+        boat_list = [Submarine, Aircraft, PatrolBoat, PatrolBoat]
+        while len(boat_list) != 0:
+            rand_pos = (rand_choice(row_range), rand_choice(col_range))
+            horizontal = randint(0, 1) == 0
+            ship = boat_list[-1](rand_pos, horizontal)
+            if ship.can_place(self.my_board):
+                ship.place(self.my_board)
+                boat_list.pop()
