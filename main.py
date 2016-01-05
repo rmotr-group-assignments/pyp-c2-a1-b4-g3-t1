@@ -7,6 +7,8 @@ def game():
 
     attacking = HumanPlayer()
     defending = ComputerPlayer()
+    print "DEBUG CPU"
+    print str(defending.my_board)
     while True:
         attack_pos = attacking.choose_attack()
         hit = defending.receive_attack(attack_pos)
