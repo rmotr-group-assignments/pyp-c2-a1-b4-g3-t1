@@ -2,7 +2,7 @@ from board import Board
 from board import empty_marker
 from board import row_range
 from board import col_range
-from parse_board_input import parse_position_input as get_attack_coord
+from parse_board_input import parse_position_input as get_attack_coords
 from parse_board_input import parse as get_next_ship
 from random import choice as rand_choice
 from random import randint
@@ -56,7 +56,7 @@ class HumanPlayer(Player):
         try:
             print self.my_board.side_by_side_str(self.enemy_board)
             position = get_attack_coords(raw_input("Fire where? "))
-            if enemy_board.cell_empty(position[0], position[1]):
+            if self.enemy_board.cell_empty(position[0], position[1]):
                 return position
             else:
                 print "You've already fired there!"
@@ -131,7 +131,7 @@ class ComputerPlayer(Player):
     def choose_attack(self):
         rand_row = rand_choice(row_range)
         rand_col = rand_choice(col_range)
-        if enemy_board.cell_empty(rand_row, rand_col):
+        if self.enemy_board.cell_empty(rand_row, rand_col):
             return (rand_row, rand_col)
         else:
             return self.choose_attack()
