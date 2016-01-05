@@ -126,6 +126,8 @@ class HumanPlayer(Player):
             except ValueError as v:
                 print str(v)
 
+        print str(self.my_board)
+
 class ComputerPlayer(Player):
     def __str__(self):
         return "CPU"

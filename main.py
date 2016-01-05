@@ -10,6 +10,7 @@ def game():
     print "DEBUG CPU"
     print str(defending.my_board)
     while True:
+        print "{}'s turn".format(str(attacking))
         attack_pos = attacking.choose_attack()
         hit = defending.receive_attack(attack_pos)
         attacking.update_enemy_board(attack_pos[0], attack_pos[1], hit)
@@ -18,6 +19,7 @@ def game():
             break
         else:
             attacking, defending = defending, attacking
+        print ""
 
 if __name__ == '__main__':
     game()
