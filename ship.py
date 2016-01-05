@@ -78,6 +78,7 @@ class Aircraft(AbstractShip):
 
 _string_ship_dict = {
         "submarine": Submarine,
+        "sub": Submarine,
         "aircraft": Aircraft,
         "patrol": PatrolBoat
 }
