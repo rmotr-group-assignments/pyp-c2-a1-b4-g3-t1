@@ -1,15 +1,18 @@
 from board import Board
 from board import empty_marker
+from parse_board_input import parse_position_input as get_attack_coord
+from parse_board_input import parse as get_next_ship
 from random import choice as rand_choice
 import re
-from parse_board_input import parse_position_input as get_attack_coord
+from ship import Aircraft, PatrolBoat, Submarine
 
 
 class Player(object):
     def __init__(self):
         self.ships_left = 4
-        self.my_board = self.__build_board()
+        self.my_board = Board()
         self.enemy_board = Board()
+        self.build_board()
 
     def __str__(self):
         raise NotImplementedError()
@@ -33,7 +36,7 @@ class Player(object):
         """Returns whether this player's ships have all sunk"""
         return self.ships_left == 0
 
-    def __build_board(self):
+    def build_board(self):
         """Private method to build the player's board upon initialization"""
         raise NotImplementedError()
 
@@ -86,6 +89,37 @@ class HumanPlayer(Player):
             else:
                 print "Don't lie!"
 
+    def build_board(self):
+        boat_dict = {
+                Submarine: [1, "Submarine"],
+                Aircraft: [1, "Aircraft"],
+                PatrolBoat: [2, "Patrol Boat"],
+        }
+        total_ships = 4
+
+        def print_boats_left():
+            boat_vals = filter(lambda v: v[0] != 0, boat_dict.values())
+            ship_print = ["{} {}(s)".format(v[0], v[1]) for v in boat_vals]
+            prompt = "Next ship?\nYou have {} left\n"
+            return prompt.format(', '.join(ship_print))
+
+        while total_ships != 0:
+            print str(self.my_board)
+            try:
+                ship_spec = get_next_ship(raw_input(print_boats_left()))
+                entry = boat_dict[ship_spec[0]]
+                if entry[0] != 0:
+                   ship = ship_spec[0](ship_spec[1], ship_spec[2])
+                   if ship.can_place(self.my_board):
+                       ship.place(self.my_board)
+                       entry[0] -= 1
+                       total_ships -= 1
+                   else:
+                       print "Ship does not fit at {}!".format(ship_spec[1])
+                else:
+                    print "Cannot place anymore {}!".format(entry[1])
+            except ValueError as v:
+                print str(v)
 
 class ComputerPlayer(Player):
     def __str__(self):
