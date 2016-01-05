@@ -19,8 +19,17 @@ class Board(object):
         for row in row_range:
             for col in col_range:
                 self.cells[(row, col)] = empty_marker
+
         for row in row_padding:
             for col in col_padding:
+                self.cells[(row, col)] = padding_sentinel
+
+        for row in row_range:
+            for col in col_padding:
+                self.cells[(row, col)] = padding_sentinel
+
+        for row in row_padding:
+            for col in col_range:
                 self.cells[(row, col)] = padding_sentinel
 
     def read_cell(self, row, col):
