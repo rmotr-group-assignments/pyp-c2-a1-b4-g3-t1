@@ -7,7 +7,8 @@ class AbstractShip(object):
         self.horizontal = horizontal
 
     def __eq__(self, other):
-        return self.pos == other.pos and self.horizontal == other.horizontal
+        return (isinstance(other, AbstractShip) and self.pos == other.pos and
+                self.horizontal == other.horizontal)
 
     def can_place(self, board):
         p = self.pos
