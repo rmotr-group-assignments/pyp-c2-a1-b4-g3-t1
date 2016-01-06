@@ -8,8 +8,8 @@ padded_row_range = row_range + row_padding
 padded_col_range = col_range + col_padding
 
 padding_sentinel = 0
-hit_marker = "H"
-miss_marker = "M"
+hit_marker = "X"
+miss_marker = "~"
 empty_marker = " "
 
 

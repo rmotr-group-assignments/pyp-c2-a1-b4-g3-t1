@@ -1,14 +1,18 @@
 from player import HumanPlayer, ComputerPlayer
+from sys import argv as cmdargs
 
 
-def game():
+def game(debug):
     """The main game loop"""
     print "Welcome to Battleship!\n\n"
 
     attacking = HumanPlayer()
     defending = ComputerPlayer()
-    print "DEBUG CPU"
-    print str(defending.my_board)
+
+    if debug:
+        print "DEBUG CPU"
+        print str(defending.my_board)
+
     while True:
         print "{}'s turn".format(str(attacking))
         attack_pos = attacking.choose_attack()
@@ -22,4 +26,4 @@ def game():
         print ""
 
 if __name__ == '__main__':
-    game()
+    game("-D" in cmdargs)
