@@ -1,5 +1,5 @@
 from objects import Board, Player
-from boat_parser import parse
+from boat_parser import parse, coordinate_parse
 from random import randint
 import ai
 
@@ -39,19 +39,40 @@ def game():
             print e
 
     #AI places his ships here, core logic executed in AI library.
-    ai.board_placement(cpu.defense_board)
+    ai.boat_placement(CPU.defense_board)
 
     #Flip a coin to determine who goes first.
     print 'Battleships placed for {} and computer.'.format(player1.name)
 
-    flip = (randint(1,100) % 2 == 0)
+    #using turn to alternate turns
+    turn = True
+    players = (player1, CPU)
+    while not any([player1.has_win, CPU.has_win]):
+        if turn:
+            player = players[0]
+            print 'Here\'s your current board used for tracking your attacks:'
+            print ''
+            player.attack_board.print_board()
+            coordinate = raw_input('Player {} Enter your coordinate: '.format(player.name))
+            try:
+                parsed_coord = coordinate_parse(coordinate)
+                if players[1].defense_board[parsed_coord][0]:
+                    print 'Hit!'
+                    player.attack_board[parsed_coord][0] = 'x'
+                    
+                else:
+                    print 'Miss!'
+                    player
 
-    if flip:
-        print 'Player1 has won the cointoss and will send his targets first.'
 
-    while not any([player1.has_win, player2.has_win]):
-        #game logic
-        pass
+            except ValueError as e:
+                print e
+                continue
+        else:
+            player = players[1]
+
+
+        turn = not turn
 
 if __name__ == "__main__":
     game()

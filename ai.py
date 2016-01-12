@@ -7,7 +7,7 @@ def boat_placement(board):
     #completely random placement, this is brute force and should be rewritten for performance so that it remembers prior ship placements
     while available_ships:
         rand_orientation = bool(randint(0,1))
-        rand_xy = (randint(1,10),randint(1,10))
+        rand_xy = (randint(1,11),randint(1,11))
         random_boat = randint(0,len(available_ships)-1)
         next_ship = available_ships[random_boat]
         try:

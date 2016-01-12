@@ -21,14 +21,14 @@ def parse(input):
     ship_type = SHIP_STRING.get(ship_match.group())
 
     #point index
-    position_parser = re.compile(r'(?i)[A-L],?\s?[0-9][0-9]?')
+    position_parser = re.compile(r'(?i)[A-J],?\s?([0-9]?[0-9])')
     position_match = position_parser.search(input)
 
     if position_match is None:
         raise ValueError("Invalid position in input, make sure you use the form (x,y); e.g. (A,2)")
 
     position = (ord(position_match.group()[0].upper())-64,
-                int(position_match.group()[-1]))
+                int(position_match.group()[1:]))
 
     #orientation, True = horizontal
     orientation_parser = re.compile(r'(?i)horizontal|vertical|horizontally|' +
@@ -39,3 +39,12 @@ def parse(input):
     orientation = "horizontal" in orientation_match.group().lower()
 
     return ship_type, position, orientation
+
+def coordinate_parse(input):
+    position_parser = re.compile(r'(?i)[A-J],?\s?([0-9]?[0-9])')
+    position_match = position_parser.search(input)
+
+    position = (ord(position_match.group()[0].upper())-64,
+                int(position_match.group()[1:]))
+
+    return position
